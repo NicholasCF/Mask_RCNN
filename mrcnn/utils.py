@@ -29,7 +29,7 @@ COCO_MODEL_URL = "https://github.com/matterport/Mask_RCNN/releases/download/v2.0
 
 ############################################################
 #  Bounding Boxes
-############################################################
+# ###########################################################
 
 def extract_bboxes(mask):
     """Compute bounding boxes from masks.
@@ -234,7 +234,7 @@ def box_refinement(box, gt_box):
 
 ############################################################
 #  Dataset
-############################################################
+# ###########################################################
 
 class Dataset(object):
     """The base class for dataset classes.
@@ -578,7 +578,7 @@ def unmold_mask(mask, bbox, image_shape):
 
 ############################################################
 #  Anchors
-############################################################
+# ###########################################################
 
 def generate_anchors(scales, ratios, shape, feature_stride, anchor_stride):
     """
@@ -641,7 +641,7 @@ def generate_pyramid_anchors(scales, ratios, feature_shapes, feature_strides,
 
 ############################################################
 #  Miscellaneous
-############################################################
+# ###########################################################
 
 def trim_zeros(x):
     """It's common to have tensors larger than the available data and

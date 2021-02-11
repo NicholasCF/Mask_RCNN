@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Mask R-CNN
 The main Mask R-CNN model implementation.
@@ -33,7 +34,7 @@ tf.compat.v1.disable_eager_execution()
 
 ############################################################
 #  Utility Functions
-############################################################
+# ###########################################################
 
 
 def log(text, array=None):
@@ -88,7 +89,7 @@ def compute_backbone_shapes(config, image_shape):
 
 ############################################################
 #  Resnet Graph
-############################################################
+# ###########################################################
 
 # Code adopted from:
 # https://github.com/fchollet/deep-learning-models/blob/master/resnet50.py
@@ -209,7 +210,7 @@ def resnet_graph(input_image, architecture, stage5=False, train_bn=True):
 
 ############################################################
 #  Proposal Layer
-############################################################
+# ###########################################################
 
 def apply_box_deltas_graph(boxes, deltas):
     """Applies the given deltas to the given boxes.
@@ -347,7 +348,7 @@ class ProposalLayer(KE.Layer):
 
 ############################################################
 #  ROIAlign Layer
-############################################################
+# ###########################################################
 
 def log2_graph(x):
     """Implementation of Log2. TF doesn't have a native implementation."""
@@ -470,7 +471,7 @@ class PyramidROIAlign(KE.Layer):
 
 ############################################################
 #  Detection Target Layer
-############################################################
+# ###########################################################
 
 def overlaps_graph(boxes1, boxes2):
     """Computes IoU overlaps between two sets of boxes.
@@ -702,7 +703,7 @@ class DetectionTargetLayer(KE.Layer):
 
 ############################################################
 #  Detection Layer
-############################################################
+# ###########################################################
 
 def refine_detections_graph(rois, probs, deltas, window, config):
     """Refine classified proposals and filter overlaps and return final
@@ -853,7 +854,7 @@ class DetectionLayer(KE.Layer):
 
 ############################################################
 #  Region Proposal Network (RPN)
-############################################################
+# ###########################################################
 
 def rpn_graph(feature_map, anchors_per_location, anchor_stride):
     """Builds the computation graph of Region Proposal Network.
@@ -923,7 +924,7 @@ def build_rpn_model(anchor_stride, anchors_per_location, depth):
 
 ############################################################
 #  Feature Pyramid Network Heads
-############################################################
+# ###########################################################
 
 def fpn_classifier_graph(rois, feature_maps, image_meta,
                          pool_size, num_classes, train_bn=True,
@@ -1038,7 +1039,7 @@ def build_fpn_mask_graph(rois, feature_maps, image_meta,
 
 ############################################################
 #  Loss Functions
-############################################################
+# ###########################################################
 
 def smooth_l1_loss(y_true, y_pred):
     """Implements Smooth-L1 loss.
@@ -1212,7 +1213,7 @@ def mrcnn_mask_loss_graph(target_masks, target_class_ids, pred_masks):
 
 ############################################################
 #  Data Generator
-############################################################
+# ###########################################################
 
 def load_image_gt(dataset, config, image_id, augmentation=None):
     """Load and return ground truth data for an image (image, mask, bounding boxes).
@@ -1813,7 +1814,7 @@ class DataGenerator(KU.Sequence):
 
 ############################################################
 #  MaskRCNN Class
-############################################################
+# ###########################################################
 
 class MaskRCNN(object):
     """Encapsulates the Mask RCNN model functionality.
@@ -2359,7 +2360,7 @@ class MaskRCNN(object):
         if os.name == 'nt':
             workers = 0
         else:
-            workers = multiprocessing.cpu_count()
+            workers = 0
 
         self.keras_model.fit(
             train_generator,
@@ -2720,7 +2721,7 @@ class MaskRCNN(object):
 
 ############################################################
 #  Data Formatting
-############################################################
+# ###########################################################
 
 def compose_image_meta(image_id, original_image_shape, image_shape,
                        window, scale, active_class_ids):
@@ -2810,7 +2811,7 @@ def unmold_image(normalized_images, config):
 
 ############################################################
 #  Miscellenous Graph Functions
-############################################################
+# ###########################################################
 
 def trim_zeros_graph(boxes, name='trim_zeros'):
     """Often boxes are represented with matrices of shape [N, 4] and
